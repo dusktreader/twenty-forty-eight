@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "twenty-forty-eight"
+version = "0.1.0"
+description = "Just another 2048 implementation for fun"
+authors = ["Tucker Beck <tucker.beck@gmail.com>"]
+license = "MIT"
+packages = [
+    { include = "game" }
+]
+
+
+[tool.poetry.dependencies]
+python = "^3.10"
+auto-name-enum = "^1.2.0"
+py-buzz = "^3.1.1"
+flake8 = "^4.0.1"
+attrs = "^21.4.0"
+cattrs = "^22.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^7.1.1"
+pytest-cov = "^3.0.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
