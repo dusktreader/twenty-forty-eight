@@ -54,7 +54,13 @@ class Tile(BaseModel):
 
     @classmethod
     def make(cls, row: int, col: int, value: int | None = None) -> "Tile":
+        """
+        Yeah, I get it. It's a named tuple at this point. However, pydantic models
+        are composable and serializable, so...
+        """
         return cls(pos=Position.make(row, col), value=value)
+
+    def __hash__(self):
 
 
 class Move(BaseModel):
@@ -62,6 +68,19 @@ class Move(BaseModel):
     final_pos: Position
     start_value: int
     final_value: int
+
+
+class MoveFrame(BaseModel):
+    moves: list[Move]
+
+    def simplify(self):
+        finals = {(m.final_pos.row, m.final_pos.col) for m in self.moves}
+
+
+class Context(BaseModel):
+    turn: int
+    score: int
+    history: list[MoveFrame]
 
 
 class Slice(BaseModel):
