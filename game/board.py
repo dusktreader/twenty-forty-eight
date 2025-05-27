@@ -60,8 +60,6 @@ class Tile(BaseModel):
         """
         return cls(pos=Position.make(row, col), value=value)
 
-    def __hash__(self):
-
 
 class Move(BaseModel):
     start_pos: Position
@@ -74,7 +72,15 @@ class MoveFrame(BaseModel):
     moves: list[Move]
 
     def simplify(self):
-        finals = {(m.final_pos.row, m.final_pos.col) for m in self.moves}
+        finals = {(m.final_pos.row, m.final_pos.col): m for m in self.moves}
+        for move in self.moves:
+            key = (move.start_pos.row, move.start_pos.col)
+            combined_move = finals.pop(key, None)
+            if combined_move is not None:
+                combined_move.start_pos = move.start_pos
+                finals.pop((move.final_pos.row, move.final_pos.col))
+
+        self.moves = [m for m in finals.values()]
 
 
 class Context(BaseModel):
